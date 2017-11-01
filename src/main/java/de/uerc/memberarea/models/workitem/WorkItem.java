@@ -23,31 +23,31 @@ import de.uerc.memberarea.models.users.ClubMember;
 @Entity
 public class WorkItem extends TimestampedEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(value = View.Nested.class)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonView(value = View.Nested.class)
+	private Long id;
 
-    @OneToOne
-    private SocialClub socialClub;
+	@OneToOne
+	private SocialClub socialClub;
 
-    @JsonView(value = View.Nested.class)
-    private String title;
-    private String description;
-    private LocalDateTime published;
-    private long duration_expected;
+	@JsonView(value = View.Nested.class)
+	private String title;
+	private String description;
+	private LocalDateTime published;
+	private long duration_expected;
 
-    @OneToOne
-    private ClubMember created_by;
+	@OneToOne
+	private ClubMember created_by;
 
-    private LocalDateTime due_at;
+	private LocalDateTime due_at;
 
-    private int max_assignees;
+	private int max_assignees;
 
-    @OneToMany
-    @JsonSerialize(using = NestedSerializer.class)
-    private Set<Tag> tags;
-    
-    private boolean deleted;
+	@OneToMany
+	@JsonSerialize(using = NestedSerializer.class)
+	private Set<Tag> tags;
+
+	private boolean deleted;
 
 }

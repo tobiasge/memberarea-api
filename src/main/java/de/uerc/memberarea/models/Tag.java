@@ -13,32 +13,32 @@ import de.uerc.memberarea.json.View;
 @Entity
 public class Tag extends TimestampedEntity {
 
-    private static final long serialVersionUID = -4442738827193280126L;
+	private static final long serialVersionUID = -4442738827193280126L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(value = View.Nested.class)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonView(value = View.Nested.class)
+	private Long id;
 
-    @OneToOne
-    private SocialClub socialClub;
+	@OneToOne
+	private SocialClub socialClub;
 
-    @JsonView(value = View.Nested.class)
-    private String name;
+	@JsonView(value = View.Nested.class)
+	private String name;
 
-    Tag() {
-    }
+	Tag() {
+	}
 
-    public Tag(String name) {
-        this.name = name;
-    }
+	public Tag(String name) {
+		this.name = name;
+	}
 
-    public Long getId() {
-        return this.id;
-    }
+	public Long getId() {
+		return this.id;
+	}
 
-    public String getName() {
-        return this.name;
-    }
+	public String getName() {
+		return this.name;
+	}
 
 }

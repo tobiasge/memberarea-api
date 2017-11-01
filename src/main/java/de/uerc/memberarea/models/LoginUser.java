@@ -1,9 +1,9 @@
 package de.uerc.memberarea.models;
 
 public class LoginUser {
-	
+
 	private String username;
-	
+
 	private String password;
 
 	public String getUsername() {

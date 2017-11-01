@@ -47,7 +47,7 @@ public class WorkitemAssignment extends TimestampedEntity {
 	private LocalDateTime verifiedAt;
 
 	private String comment;
-	
+
 	public WorkItem getWorkitem() {
 		return this.workitem;
 	}

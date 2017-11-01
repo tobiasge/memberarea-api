@@ -50,8 +50,6 @@ public class TokenController {
 		throw new BadCredentialsException("Username or Password");
 	}
 
-
-
 	private boolean accountOk(UserDetails userDetails) {
 		if (!userDetails.isEnabled()) {
 			throw new DisabledException("Account is disabled");

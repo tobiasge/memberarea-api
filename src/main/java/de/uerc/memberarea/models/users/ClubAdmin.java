@@ -6,9 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
-import de.uerc.memberarea.json.View;
 import de.uerc.memberarea.models.SocialClub;
 
 @Entity

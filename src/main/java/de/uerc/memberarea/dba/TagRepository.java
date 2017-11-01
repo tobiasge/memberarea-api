@@ -9,7 +9,7 @@ import de.uerc.memberarea.models.Tag;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    Tag findByName(String name);
+	Tag findByName(String name);
 
-        List<Tag> findBySocialClub(SocialClub socialClub);
+	List<Tag> findBySocialClub(SocialClub socialClub);
 }

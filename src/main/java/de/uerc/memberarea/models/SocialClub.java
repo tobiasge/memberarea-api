@@ -12,12 +12,12 @@ import de.uerc.memberarea.json.View;
 @Entity
 public class SocialClub extends TimestampedEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(value = View.Nested.class)
-    private Long id;
-    
-    @JsonView(value = View.Nested.class)
-    private String name;
-    
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonView(value = View.Nested.class)
+	private Long id;
+
+	@JsonView(value = View.Nested.class)
+	private String name;
+
 }

@@ -12,18 +12,18 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 public class NestedSerializer extends JsonSerializer<Object> {
 
-    @Override
-    public void serialize(Object object, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-        throws IOException, JsonProcessingException {
+	@Override
+	public void serialize(Object object, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+			throws IOException, JsonProcessingException {
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
-        mapper.setSerializationInclusion(Include.NON_NULL);
-        mapper.setConfig(mapper.getSerializationConfig().withView(View.Nested.class));
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		mapper.setConfig(mapper.getSerializationConfig().withView(View.Nested.class));
 
-        jsonGenerator.setCodec(mapper);
-        jsonGenerator.writeObject(object);
+		jsonGenerator.setCodec(mapper);
+		jsonGenerator.writeObject(object);
 
-    }
+	}
 
 }

@@ -16,14 +16,14 @@ public class Boat {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonView(value = View.Nested.class)
 	private Long id;
-	
+
 	@OneToOne
 	private SocialClub socialClub;
-	
-	private String name;	
-	
+
+	private String name;
+
 	private String efaId;
-	
+
 	private String type;
-	
+
 }
