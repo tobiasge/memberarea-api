@@ -4,7 +4,6 @@ import static de.uerc.memberarea.security.SecurityConstants.PASSWORD_EXPIRY_DAYS
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -13,9 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -24,84 +21,161 @@ import de.uerc.memberarea.models.SocialClub;
 import de.uerc.memberarea.models.TimestampedEntity;
 
 @Entity
-public class ClubMember extends TimestampedEntity implements UserDetails, CredentialsContainer {
+public class ClubMember extends TimestampedEntity implements IClubUser {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonView(value = View.Nested.class)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(value = View.Nested.class)
+    private Long id;
 
-	@OneToOne
-	private SocialClub socialClub;
+    public Long getId() {
+        return id;
+    }
 
-	// Personal information
-	private String salutation;
-	private String first_name;
-	private String last_name;
-	private Sex sex;
-	private LocalDate birthday;
-	private String email;
+    public SocialClub getSocialClub() {
+        return socialClub;
+    }
 
-	// Club information
-	private long member_id;
-	private LocalDate entry_date;
-	private LocalDate exit_date;
-	private MemberState state;
+    public String getSalutation() {
+        return salutation;
+    }
 
-	private String efaId;
+    public String getFirst_name() {
+        return first_name;
+    }
 
-	// Security fields
-	private String username;
-	private String password;
-	private LocalDate pw_changed_at;
-	private boolean enabled;
-	private boolean locked;
+    public String getLast_name() {
+        return last_name;
+    }
 
-	public static enum MemberState {
-		Active, Passive
-	}
+    public Sex getSex() {
+        return sex;
+    }
 
-	public static enum Sex {
-		Male, Female, None
-	}
+    public LocalDate getBirthday() {
+        return birthday;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<>();
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
+    public long getMember_id() {
+        return member_id;
+    }
 
-	@Override
-	public String getUsername() {
-		return this.username;
-	}
+    public LocalDate getEntry_date() {
+        return entry_date;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return !(this.exit_date != null && this.exit_date.isBefore(LocalDate.now()));
-	}
+    public LocalDate getExit_date() {
+        return exit_date;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return !this.locked;
-	}
+    public MemberState getState() {
+        return state;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return !this.pw_changed_at.isBefore(LocalDate.now().minus(PASSWORD_EXPIRY_DAYS, ChronoUnit.DAYS));
-	}
+    public String getEfaId() {
+        return efaId;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return this.enabled;
-	}
+    public LocalDate getPw_changed_at() {
+        return pw_changed_at;
+    }
 
-	@Override
-	public void eraseCredentials() {
-		this.password = null;
-	}
+    @OneToOne
+    private SocialClub socialClub;
+
+    // Personal information
+    private String salutation;
+    private String first_name;
+    private String last_name;
+    private Sex sex;
+    private LocalDate birthday;
+    private String email;
+
+    // Club information
+    private long member_id;
+    private LocalDate entry_date;
+    private LocalDate exit_date;
+    private MemberState state;
+
+    private String efaId;
+
+    // Security fields
+    private String username;
+    private String password;
+    private LocalDate pw_changed_at;
+    private boolean enabled;
+    private boolean locked;
+
+    public static enum MemberState {
+        Active, Passive
+    }
+
+    public static enum Sex {
+        Male, Female, None
+    }
+
+    @Override
+    public boolean isAccountExpired() {
+        return this.exit_date != null && this.exit_date.isBefore(LocalDate.now());
+    }
+
+    @Override
+    public boolean isAccountLocked() {
+        return this.locked;
+    }
+
+    @Override
+    public boolean isCredentialsExpired() {
+        return this.pw_changed_at.isBefore(LocalDate.now().minus(PASSWORD_EXPIRY_DAYS, ChronoUnit.DAYS));
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    @Override
+    public String getName() {
+        return this.socialClub.getHost() + "/" + this.getUserType() + "/" + this.username;
+    }
+
+    @Override
+    public UserType getUserType() {
+        return UserType.MEMBER;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Object getCredentials() {
+        return this.password;
+    }
+
+    @Override
+    public Object getDetails() {
+        return null;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return this;
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        return true;
+    }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+    }
+
 }

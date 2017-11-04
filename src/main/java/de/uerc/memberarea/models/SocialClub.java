@@ -20,4 +20,9 @@ public class SocialClub extends TimestampedEntity {
 	@JsonView(value = View.Nested.class)
 	private String name;
 
+	private String host;
+
+	public String getHost() {
+		return host;
+	}
 }
