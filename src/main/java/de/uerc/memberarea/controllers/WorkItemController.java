@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.uerc.memberarea.dto.ResponseStatus;
 import de.uerc.memberarea.models.workitem.Workitem;
 import de.uerc.memberarea.service.WorkitemService;
 
@@ -20,46 +21,46 @@ import de.uerc.memberarea.service.WorkitemService;
 @RequestMapping(path = "/workitems")
 public class WorkItemController {
 
-	@Autowired
-	private WorkitemService workitemService;
+    @Autowired
+    private WorkitemService workitemService;
 
-	@PostMapping(path = "/{workItemId}/tag/{tagId}")
-	
-	public HttpEntity<?> addTag(@PathVariable long workItemId, @PathVariable long tagId) {
-		this.workitemService.addTag(workItemId, tagId);
+    @PostMapping(path = "/{workItemId}/tag/{tagId}")
 
-		return new ResponseEntity<>(null, HttpStatus.OK);
-	}
+    public HttpEntity<ResponseStatus> addTag(@PathVariable final long workItemId, @PathVariable final long tagId) {
+        this.workitemService.addTag(workItemId, tagId);
 
-	@PostMapping(path = "/{workItemId}/assign/{userId}")
-	public ResponseEntity<?> assignClubMember(@PathVariable long workItemId, @PathVariable long userId) {
-		throw new NotYetImplementedException();
-	}
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 
-	@DeleteMapping(path = "/{workItemId}/tag/{tagId}")
-	public ResponseEntity<?> deleteTag(@PathVariable long workItemId, @PathVariable long tagId) {
-		this.workitemService.removeTag(workItemId, tagId);
-		
-		return new ResponseEntity<>(null, HttpStatus.OK);
-	}
+    @PostMapping(path = "/{workItemId}/assign/{userId}")
+    public ResponseEntity<?> assignClubMember(@PathVariable final long workItemId, @PathVariable final long userId) {
+        throw new NotYetImplementedException();
+    }
 
-	@GetMapping(path = "/{workItemId}")
-	public Workitem getWorkitem(@PathVariable long workItemId) {
-		throw new NotYetImplementedException();
-	}
+    @DeleteMapping(path = "/{workItemId}/tag/{tagId}")
+    public ResponseEntity<?> deleteTag(@PathVariable final long workItemId, @PathVariable final long tagId) {
+        this.workitemService.removeTag(workItemId, tagId);
 
-	@DeleteMapping(path = "/{workItemId}/assign/{userId}")
-	public ResponseEntity<?> removeClubMember(@PathVariable long workItemId, @PathVariable long userId) {
-		throw new NotYetImplementedException();
-	}
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 
-	@PostMapping(path = "/")
-	public Workitem saveNewWorkitem() {
-		throw new NotYetImplementedException();
-	}
+    @GetMapping(path = "/{workItemId}")
+    public Workitem getWorkitem(@PathVariable final long workItemId) {
+        throw new NotYetImplementedException();
+    }
 
-	@PutMapping(path = "/{workItemId}")
-	public Workitem updateWorkitem(@PathVariable long workItemId) {
-		throw new NotYetImplementedException();
-	}
+    @DeleteMapping(path = "/{workItemId}/assign/{userId}")
+    public ResponseEntity<?> removeClubMember(@PathVariable final long workItemId, @PathVariable final long userId) {
+        throw new NotYetImplementedException();
+    }
+
+    @PostMapping(path = "/")
+    public Workitem saveNewWorkitem() {
+        throw new NotYetImplementedException();
+    }
+
+    @PutMapping(path = "/{workItemId}")
+    public Workitem updateWorkitem(@PathVariable final long workItemId) {
+        throw new NotYetImplementedException();
+    }
 }

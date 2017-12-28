@@ -1,4 +1,4 @@
-package de.uerc.memberarea.models;
+package de.uerc.memberarea.dto;
 
 public class LoginUser {
 

@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.uerc.memberarea.models.LoginUser;
-import de.uerc.memberarea.models.Token;
+import de.uerc.memberarea.dto.LoginUser;
+import de.uerc.memberarea.dto.Token;
 import de.uerc.memberarea.models.base.ClubUser;
 import de.uerc.memberarea.models.base.ClubUser.UserType;
 import de.uerc.memberarea.service.UserService;
@@ -29,41 +29,12 @@ import de.uerc.memberarea.service.UserService;
 public class TokenController {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private StandardPasswordEncoder standardPasswordEncoder;
 
-    @PostMapping(path = "/r")
-    public Token refreshToken(@RequestBody Token token) {
-        throw new NotYetImplementedException();
-    }
+    @Autowired
+    private UserService userService;
 
-    @PostMapping(path = "/v")
-    public Token verifyToken(@RequestBody Token token) {
-        throw new NotYetImplementedException();
-    }
-
-    @PostMapping(path = "/?")
-    public Token login(@RequestBody LoginUser loginUser, @RequestHeader(name = "Host") String host) {
-
-        ClubUser.UserType userType = UserType.valueOf(loginUser.getUserType());
-
-        Optional<? extends ClubUser> optIClubUser = userService.findUserByUsername(loginUser.getUsername(), userType);
-        if (!optIClubUser.isPresent()) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        ClubUser iClubUser = optIClubUser.get();
-
-        if (this.standardPasswordEncoder.matches(loginUser.getPassword(), iClubUser.getCredentials().toString())
-            && this.accountOk(iClubUser)) {
-            String token = createToken(iClubUser);
-            return new Token(token);
-        }
-        throw new BadCredentialsException("Username or Password");
-    }
-
-    private boolean accountOk(ClubUser iClubUser) {
+    private boolean accountOk(final ClubUser iClubUser) {
         if (!iClubUser.isEnabled()) {
             throw new DisabledException("Account is disabled");
         }
@@ -75,6 +46,38 @@ public class TokenController {
         }
 
         return true;
+    }
+
+    @PostMapping(path = "/?")
+    public Token login(@RequestBody final LoginUser loginUser, @RequestHeader(name = "Host") final String host) {
+
+        final ClubUser.UserType userType = UserType.valueOf(loginUser.getUserType());
+
+        final Optional<? extends ClubUser> optIClubUser = userService.findUserByUsername(loginUser.getUsername(),
+            userType);
+        if (!optIClubUser.isPresent()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        final ClubUser iClubUser = optIClubUser.get();
+
+        if (this.standardPasswordEncoder.matches(loginUser.getPassword(), iClubUser.getCredentials().toString())
+            && this.accountOk(iClubUser)) {
+            final String token = createToken(iClubUser);
+            return new Token(token);
+        }
+        throw new BadCredentialsException("Username or Password");
+    }
+
+    @PostMapping(path = "/r")
+    public Token refreshToken(@RequestBody final Token token) {
+        throw new NotYetImplementedException();
+    }
+
+    // TODO Method to read permissions of current user
+
+    @PostMapping(path = "/v")
+    public Token verifyToken(@RequestBody final Token token) {
+        throw new NotYetImplementedException();
     }
 
 }
