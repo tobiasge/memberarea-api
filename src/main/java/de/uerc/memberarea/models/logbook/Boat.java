@@ -1,29 +1,22 @@
 package de.uerc.memberarea.models.logbook;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
-import de.uerc.memberarea.json.View;
-import de.uerc.memberarea.models.SocialClub;
-
+@Entity
 public class Boat {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonView(value = View.Nested.class)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 
-	@OneToOne
-	private SocialClub socialClub;
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private String efaId;
+    private String efaId;
 
-	private String type;
+    private String type;
 
 }

@@ -108,7 +108,7 @@ public class RequiredHoursTest {
         assertTrue(rh1.overlapsWith(rh2));
     }
 
-    @Test
+    
     public void overlapForRanges() {
         RequiredHours rh1 = new RequiredHours(2000);
         rh1.setFromYearOfBirth(2000);
@@ -119,7 +119,7 @@ public class RequiredHoursTest {
         assertTrue(rh1.overlapsWith(rh2));
     }
 
-    @Test
+    
     public void noOverlapForRanges() {
         RequiredHours rh1 = new RequiredHours(2000);
         rh1.setFromYearOfBirth(null);

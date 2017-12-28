@@ -3,97 +3,103 @@ package de.uerc.memberarea.models.workitem;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import de.uerc.memberarea.json.NestedSerializer;
-import de.uerc.memberarea.json.View;
-import de.uerc.memberarea.models.SocialClub;
-import de.uerc.memberarea.models.TimestampedEntity;
+import de.uerc.memberarea.models.base.AuditedEntity;
+import de.uerc.memberarea.models.serializer.NestedClubMemberSerializer;
+import de.uerc.memberarea.models.serializer.NestedWorkitemSerializer;
 import de.uerc.memberarea.models.users.ClubMember;
 
 @Entity
-public class WorkitemAssignment extends TimestampedEntity {
+@IdClass(WorkitemAssignmentPk.class)
+public class WorkitemAssignment extends AuditedEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonView(value = View.Nested.class)
-	private Long id;
+    @Id
+    @ManyToOne
+    @JsonSerialize(using = NestedWorkitemSerializer.class)
+    private final Workitem workitem;
 
-	@OneToOne
-	private SocialClub socialClub;
+    @Id
+    @ManyToOne
+    @JsonSerialize(using = NestedClubMemberSerializer.class)
+    private final ClubMember assignee;
 
-	@OneToOne(optional = false)
-	@JsonSerialize(using = NestedSerializer.class)
-	private WorkItem workitem;
+    private long durationReal;
 
-	@OneToOne(optional = false)
-	@JsonSerialize(using = NestedSerializer.class)
-	private ClubMember assignee;
+    private LocalDateTime doneAt;
 
-	private long durationReal;
+    @ManyToOne
+    private ClubMember verifiedBy;
 
-	private LocalDateTime doneAt;
+    private LocalDateTime verifiedAt;
 
-	@OneToOne(optional = false)
-	@JsonSerialize(using = NestedSerializer.class)
-	private ClubMember verifiedBy;
+    private String comment;
 
-	private LocalDateTime verifiedAt;
+    public WorkitemAssignment(Workitem workitem, ClubMember assignee) {
+        this.assignee = assignee;
+        this.workitem = workitem;
+    }
 
-	private String comment;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof WorkitemAssignment) {
+            WorkitemAssignment rhs = (WorkitemAssignment) obj;
+            WorkitemAssignment lhs = this;
+            return new EqualsBuilder().append(lhs.workitem.getId(), rhs.workitem.getId())
+                .append(lhs.assignee.getId(), rhs.assignee.getId()).isEquals();
+        }
+        return false;
+    }
 
-	public WorkItem getWorkitem() {
-		return this.workitem;
-	}
+    public ClubMember getAssignee() {
+        return this.assignee;
+    }
 
-	public void setWorkitem(WorkItem workitem) {
-		this.workitem = workitem;
-	}
+    public LocalDateTime getDoneAt() {
+        return this.doneAt;
+    }
 
-	public ClubMember getAssignee() {
-		return this.assignee;
-	}
+    public long getDurationReal() {
+        return this.durationReal;
+    }
 
-	public void setAssignee(ClubMember assignee) {
-		this.assignee = assignee;
-	}
+    public LocalDateTime getVerifiedAt() {
+        return this.verifiedAt;
+    }
 
-	public long getDurationReal() {
-		return this.durationReal;
-	}
+    public ClubMember getVerifiedBy() {
+        return this.verifiedBy;
+    }
 
-	public void setDurationReal(long durationReal) {
-		this.durationReal = durationReal;
-	}
+    public Workitem getWorkitem() {
+        return this.workitem;
+    }
 
-	public LocalDateTime getDoneAt() {
-		return this.doneAt;
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(5, 17).append(this.workitem.getId()).append(this.assignee.getId()).hashCode();
+    }
 
-	public void setDoneAt(LocalDateTime doneAt) {
-		this.doneAt = doneAt;
-	}
+    public void setDoneAt(LocalDateTime doneAt) {
+        this.doneAt = doneAt;
+    }
 
-	public ClubMember getVerifiedBy() {
-		return this.verifiedBy;
-	}
+    public void setDurationReal(long durationReal) {
+        this.durationReal = durationReal;
+    }
 
-	public void setVerifiedBy(ClubMember verifiedBy) {
-		this.verifiedBy = verifiedBy;
-	}
+    public void setVerifiedAt(LocalDateTime verifiedAt) {
+        this.verifiedAt = verifiedAt;
+    }
 
-	public LocalDateTime getVerifiedAt() {
-		return this.verifiedAt;
-	}
-
-	public void setVerifiedAt(LocalDateTime verifiedAt) {
-		this.verifiedAt = verifiedAt;
-	}
-
+    public void setVerifiedBy(ClubMember verifiedBy) {
+        this.verifiedBy = verifiedBy;
+    }
 }

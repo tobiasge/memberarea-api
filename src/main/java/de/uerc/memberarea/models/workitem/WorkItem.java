@@ -1,53 +1,69 @@
 package de.uerc.memberarea.models.workitem;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import de.uerc.memberarea.json.NestedSerializer;
-import de.uerc.memberarea.json.View;
-import de.uerc.memberarea.models.SocialClub;
 import de.uerc.memberarea.models.Tag;
-import de.uerc.memberarea.models.TimestampedEntity;
-import de.uerc.memberarea.models.users.ClubMember;
+import de.uerc.memberarea.models.base.AuditedEntity;
 
 @Entity
-public class WorkItem extends TimestampedEntity {
+public class Workitem extends AuditedEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonView(value = View.Nested.class)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	@OneToOne
-	private SocialClub socialClub;
+    private String title;
+    public String getTitle() {
+        return title;
+    }
 
-	@JsonView(value = View.Nested.class)
-	private String title;
-	private String description;
-	private LocalDateTime published;
-	private long duration_expected;
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	@OneToOne
-	private ClubMember created_by;
+    private String description;
+    private LocalDateTime published;
+    private long duration_expected;
 
-	private LocalDateTime due_at;
+    private LocalDateTime due_at;
 
-	private int max_assignees;
+    private int maxAssignees;
 
-	@OneToMany
-	@JsonSerialize(using = NestedSerializer.class)
-	private Set<Tag> tags;
+    @OneToMany(mappedBy = "workitem")
+    private Set<WorkitemAssignment> assignees = new HashSet<WorkitemAssignment>();
+    
+    @ManyToMany
+    private Set<Tag> tags;
 
-	private boolean deleted;
+    private boolean deleted;
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    public int getMaxAssignees() {
+        return maxAssignees;
+    }
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
+    }
+
+    public void setMaxAssignees(int maxAssignees) {
+        this.maxAssignees = maxAssignees;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
 }

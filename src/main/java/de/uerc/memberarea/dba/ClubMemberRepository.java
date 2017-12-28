@@ -10,6 +10,6 @@ import de.uerc.memberarea.models.users.ClubMember;
 @Repository
 public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 
-	Optional<ClubMember> findByUsername(String username);
+    Optional<ClubMember> findByUsername(String username);
 
 }

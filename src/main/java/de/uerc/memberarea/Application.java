@@ -5,7 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+
+import de.uerc.memberarea.models.users.ClubMember;
+import de.uerc.memberarea.security.SpringSecurityAuditorAware;
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
@@ -20,7 +24,12 @@ public class Application extends SpringBootServletInitializer {
 	}
 
 	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
+	public StandardPasswordEncoder standardPasswordEncoder() {
+		return new StandardPasswordEncoder("Saumäßig geheim!");
+	}
+	
+	@Bean
+	public AuditorAware<ClubMember> auditorProvider() {
+	    return new SpringSecurityAuditorAware();
 	}
 }
